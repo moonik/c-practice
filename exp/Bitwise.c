@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <zconf.h>
+#include <stdbool.h>
 
 #define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
 #define BYTE_TO_BINARY(byte)  \
@@ -15,12 +16,73 @@
 void checkSign(int v);
 void abs(int v);
 void sqrt(int n);
+int checkIfOppositeSign(int x, int y);
+int extendSign(int x);
+int signExtendingWithBitWidth(int x);
+void setOrClearBits();
+void printBinary(int n);
+void merge(int a, int b, int mask);
 
 int main() {
     //checkSign(-1);
     //abs(2);
-    sqrt(25);
+    //sqrt(25);
+    //printf("%d", checkIfOppositeSign(1, 1));
+    //signExtendingWithBitWidth(-3);
+    setOrClearBits();
     return 0;
+}
+
+// a - value to merge in non-masked bits
+// b - // value to merge in masked bits
+// mask - 1 where bits from b should be selected; 0 where from a.
+void merge(int a, int b, int mask) {
+    unsigned int r;    // result of (a & ~mask) | (b & mask) goes here
+
+    r = a ^ ((a ^ b) & mask);
+}
+
+void setOrClearBits() {
+    bool f = false;         // conditional flag
+    unsigned int m = 12; // the bit mask
+    unsigned int w = 9879; // the word to modify:  if (f) w |= m; else w &= ~m;
+
+    w ^= (-f ^ w) & m;
+
+    // OR, for superscalar CPUs:
+    w = (w & ~m) | (-f & m);
+}
+
+void printBinary(int n) {
+    while (n) {
+        if (n & 1)
+            printf("1");
+        else
+            printf("0");
+
+        n >>= 1;
+    }
+}
+
+signExtendingWithBitWidth(int x) {
+    unsigned b; // number of bits representing the number in x
+    int r;      // resulting sign-extended number
+    int const m = 1U << (b - 1); // mask can be pre-computed if b is fixed
+
+    x = x & ((1U << b) - 1);  // (Skip this if bits in x above position b are already zero.)
+    r = (x ^ m) - m;
+    return r;
+}
+
+int extendSign(int x) { // convert this from using 5 bits to a full int
+    int r; // resulting sign extended number goes here
+    struct {signed int x:5;} s;
+    r = s.x = x;
+    return r;
+}
+
+int checkIfOppositeSign(int x, int y) {
+    return (x ^ y) < 0;
 }
 
 void sqrt(int n) {
@@ -69,6 +131,6 @@ void checkSign(int v) {
     sign = (v != 0) | (v >> (sizeof(int) * CHAR_BIT - 1));  // -1, 0, or +1
     // Or, for portability, brevity, and (perhaps) speed:
     sign = (v > 0) - (v < 0); // -1, 0, or +1
-    
+
     printf("Sign is: %d", sign);
 }
