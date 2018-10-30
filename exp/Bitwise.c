@@ -23,7 +23,18 @@ void setOrClearBits();
 void printBinary(int n);
 void merge(int a, int b, int mask);
 
+float myAbs(float x) {
+   // copy and re-interpret as 32 bit integer
+   int casted = *(int*) &x;
+   // clear highest bit
+   casted &= 0x7FFFFFFF;
+
+   // re-interpret as float
+   return *(float*)&casted;
+}
+
 int main() {
+    printf("%f", myAbs(-2.123f));
     //checkSign(-1);
     //abs(2);
     //sqrt(25);
