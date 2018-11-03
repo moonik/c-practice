@@ -33,23 +33,44 @@ float myAbs(float x) {
    return *(float*)&casted;
 }
 
-int main() {
-    printf("%f", myAbs(-2.123f));
-    //checkSign(-1);
-    //abs(2);
-    //sqrt(25);
-    //printf("%d", checkIfOppositeSign(1, 1));
-    //signExtendingWithBitWidth(-3);
-    setOrClearBits();
-    return 0;
+unsigned int extend(unsigned int value, unsigned int smallSize, unsigned int bigSize) {
+    // i.e. to extend from 5 to 8 bits, use extend(x,5,8)
+      unsigned int leftShift  = bigSize - smallSize;
+      unsigned int rightShift = bigSize - leftShift;
+      // extend and fill lower bits smartly
+      return (value << leftShift) | (value >> rightShift);
 }
+
+float invSquareRoot(float x) {
+    // for Newton iteration
+    float xHalf = 0.5f*x;
+    // same as above
+    unsigned int *i = (unsigned int*) &x;
+    *i = 0x5F375A86 - (*i>>1);
+    // one Newton iteration, repeating further improves precision
+    return x * (1.5f - xHalf*x*x);
+}
+
+//int main() {
+//    printf("%f", invSquareRoot(9));
+//    //printf("%f", myAbs(-2.123f));
+////    printBinary(3);
+////    printf("\n");
+////    printf("%d", extend(3, 4, 16));
+//    //checkSign(-1);
+//    //abs(2);
+//    //sqrt(25);
+//    //printf("%d", checkIfOppositeSign(1, 1));
+//    //signExtendingWithBitWidth(-3);
+//    //setOrClearBits();
+//    return 0;
+//}
 
 // a - value to merge in non-masked bits
 // b - // value to merge in masked bits
 // mask - 1 where bits from b should be selected; 0 where from a.
 void merge(int a, int b, int mask) {
     unsigned int r;    // result of (a & ~mask) | (b & mask) goes here
-
     r = a ^ ((a ^ b) & mask);
 }
 
