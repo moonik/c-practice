@@ -1,8 +1,12 @@
 #include <stdio.h>
+#include <stdbool.h>
 
-#define LOWER 0
-#define UPPER 300
-#define STEP  20
+#define LOWER       0
+#define UPPER       300
+#define STEP        20
+#define ASCII_CHARS 127
+int wordLengths[1024];
+int chars[ASCII_CHARS];
 
 /*
  * Practice exercises from book The c programming language 2
@@ -31,21 +35,27 @@ void fahrenheitToCelsius() {
  */
 void readChar() {
     int c;
-    int newLines = 0;
-    int blanks = 0;
-    int tabs = 0;
-    while((c = getchar()) != EOF) {
-        if(c == '\n') {
-            ++newLines;
-        } else if(c == '\t') {
-            ++tabs;
-        } else if(c == ' ') {
-            ++blanks;
-        }
+    int wLength = 0;
+    int j = 0;
+    while((c = getchar()) != 48) {
+        ++chars[c-'0'];
+        if (c == ' ' || c == '\t' || c == '\n') {
+            wordLengths[j++] = wLength;
+            wLength = 0;
+        } else
+            ++wLength;
     }
-    printf("New lines = %d\n", newLines);
-    printf("Tabs = %d\n", tabs);
-    printf("Blanks = %d\n", blanks);
+    printf("Word lengths:\n");
+    for (int i = 0; wordLengths[i] != 0; ++i) {
+        for (int k = 0; k < wordLengths[i]; ++k) {
+            printf("|");
+        }
+        printf("\n");
+    }
+    printf("\nCharacter frequencies:\n");
+    for (int l = 0; l <ASCII_CHARS; ++l) {
+        printf("%c = %d\n", '0'+l, chars[l]);
+    }
 }
 
 int main() {
