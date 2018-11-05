@@ -7,6 +7,7 @@
 #define ASCII_CHARS 127
 int wordLengths[1024];
 int chars[ASCII_CHARS];
+char arr[10];
 
 /*
  * Practice exercises from book The c programming language 2
@@ -58,8 +59,31 @@ void readChar() {
     }
 }
 
+void reverse() {
+    int i = 0;
+    int j = 9;
+    while(arr[--j] != '\n') {
+        ;
+    }
+    --j;
+    while(i < j) {
+        char tmp = arr[i];
+        arr[i++] = arr[j];
+        arr[j--] = tmp;
+    }
+}
+
 int main() {
-    readChar();
+    //readChar();
+    int c;
+    int i = 0;
+    while((c = getchar()) != 48) {
+        arr[i++] = c;
+    }
+    reverse();
+    for (int j = 0; arr[j] != '\n'; ++j) {
+        printf("%c", arr[j]);
+    }
     return 0;
 }
 
