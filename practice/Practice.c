@@ -5,9 +5,11 @@
 #define UPPER       300
 #define STEP        20
 #define ASCII_CHARS 127
+#define TAB_STOP    8
+
 int wordLengths[1024];
 int chars[ASCII_CHARS];
-char arr[10];
+char arr[255];
 
 /*
  * Practice exercises from book The c programming language 2
@@ -73,6 +75,31 @@ void reverse() {
     }
 }
 
+void shift(int i) {
+    char prev = arr[i];
+    for (i=i+1; arr[i] != '\n'; ++i) {
+        char tmp = arr[i];
+        arr[i] = prev;
+        prev = tmp;
+    }
+    arr[i] = prev;
+    arr[i+1] = '\n';
+}
+
+void detab() {
+    int i = 0;
+    while(arr[i] != '\n') {
+        if(arr[i] == '\t') {
+            for (int j = 1; j < TAB_STOP; ++j) {
+                arr[i++] = ' ';
+                shift(i);
+            }
+            arr[i++] = ' ';
+        }
+        i++;
+    }
+}
+
 int main() {
     //readChar();
     int c;
@@ -80,7 +107,8 @@ int main() {
     while((c = getchar()) != 48) {
         arr[i++] = c;
     }
-    reverse();
+    detab();
+    //reverse();
     for (int j = 0; arr[j] != '\n'; ++j) {
         printf("%c", arr[j]);
     }
