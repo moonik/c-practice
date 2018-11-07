@@ -8,8 +8,6 @@
 #define TAB_STOP    8
 #define SPLIT_COL   10
 
-int wordLengths[1024];
-int chars[ASCII_CHARS];
 char arr[255];
 
 /*
@@ -38,6 +36,8 @@ void fahrenheitToCelsius() {
  * reads char from input
  */
 void readChar() {
+    int wordLengths[1024] = {};
+    int chars[ASCII_CHARS] = {};
     int c;
     int wLength = 0;
     int j = 0;
@@ -63,7 +63,7 @@ void readChar() {
 }
 
 void reverse() {
-    int i = 0;
+    int i = 0; //sizeof(arr)/sizeof(arr[0) OR
     int j = 9;
     while(arr[--j] != '\n') {
         ;
@@ -129,17 +129,54 @@ void entab() {
 void foldLongInput() {
     int c = 0;
     int i = 0;
-    while (arr[i] != '\n') {
+    int sIndex = 0;
+    while (arr[i] != '\000') {
         if(c == SPLIT_COL) {
             if(arr[i] != '\t' && arr[i] != ' ') {
-                arr[i] = '-';
-                shiftRight(i);
-            }
-            arr[++i] = '\n';
-            c = 0;
+                if(i - sIndex > 2) {
+                    shiftRight(i);
+                    arr[i] = '-';
+                    shiftRight(i+1);
+                    arr[i+1] = '\n';
+                } else
+                    arr[sIndex] = '\n';
+            } else
+                arr[i] = '\n';
+            c = -1;
+        }
+        if(arr[i] == ' ' || arr[i] == '\t' || arr[i] == '\n') {
+            sIndex = i;
         }
         i++;
         c++;
+    }
+}
+
+void removeComments() {
+    int i = 0;
+    char n[255];
+    int j = 0;
+    while(arr[i] != '\000') {
+        if(arr[i] == '/' && arr[i+1] == '/') {
+            while(arr[++i] != '\n') {
+                ;
+            }
+            i++;
+        }
+        if(arr[i] == '/' && arr[i+1] == '*') {
+            bool isEnd = false;
+            while(!isEnd) {
+                if(arr[i] == '*' && arr[i+1] == '/') {
+                    isEnd = true;
+                }
+                i += 2;
+            }
+        }
+        n[j++] = arr[i];
+        i++;
+    }
+    for (int k = 0; n[k] != '\000'; ++k) {
+        printf("%c", n[k]);
     }
 }
 
@@ -153,10 +190,11 @@ int main() {
     //detab();
     //entab();
     //reverse();
-    foldLongInput();
-    for (int j = 0; arr[j] != '\0'; ++j) {
-        printf("%c", arr[j]);
-    }
+    //foldLongInput();
+    removeComments();
+//    for (int j = 0; arr[j] != '\000'; ++j) {
+//        printf("%c", arr[j]);
+//    }
     return 0;
 }
 
