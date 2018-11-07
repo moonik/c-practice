@@ -169,7 +169,7 @@ void removeComments() {
                 if(arr[i] == '*' && arr[i+1] == '/') {
                     isEnd = true;
                 }
-                i += 2;
+                i += 3;
             }
         }
         n[j++] = arr[i];
@@ -178,6 +178,55 @@ void removeComments() {
     for (int k = 0; n[k] != '\000'; ++k) {
         printf("%c", n[k]);
     }
+}
+
+char getOpenChar(char closingChar) {
+    switch(closingChar) {
+        case ')':
+            return '(';
+        case '}':
+            return '{';
+        case ']':
+            return '[';
+        case '"':
+            return '"';
+        default:
+            return '\'';
+    }
+}
+
+void checkSyntax() {
+    char stack[255] = {};
+    int s = 0;
+    int i = 0;
+    while(arr[i] != '\000') {
+        switch(arr[i]) {
+            case '(':
+            case '{':
+            case '[':
+            case '"':
+            case '\'':
+                stack[s++] = arr[i++];
+                continue;
+        }
+        switch(arr[i]) {
+            case ')':
+            case '}':
+            case ']':
+            case '"':
+            case '\'':
+                if(stack[s-1] != getOpenChar(arr[i])) {
+                    printf("Error unbalanced %c !", arr[i]);
+                    return;
+                } else
+                    s--;
+        }
+        i++;
+    }
+    if(s == 0) {
+        printf("Success!");
+    } else
+        printf("Error!");
 }
 
 int main() {
@@ -191,7 +240,8 @@ int main() {
     //entab();
     //reverse();
     //foldLongInput();
-    removeComments();
+    //removeComments();
+    checkSyntax();
 //    for (int j = 0; arr[j] != '\000'; ++j) {
 //        printf("%c", arr[j]);
 //    }
