@@ -6,6 +6,7 @@
 #define STEP        20
 #define ASCII_CHARS 127
 #define TAB_STOP    8
+#define SPLIT_COL   10
 
 int wordLengths[1024];
 int chars[ASCII_CHARS];
@@ -75,9 +76,9 @@ void reverse() {
     }
 }
 
-void shift(int i) {
-    char prev = arr[i];
-    for (i=i+1; arr[i] != '\n'; ++i) {
+void shiftRight(int i) {
+    char prev = arr[i++];
+    for (; arr[i] != '\n'; ++i) {
         char tmp = arr[i];
         arr[i] = prev;
         prev = tmp;
@@ -92,11 +93,53 @@ void detab() {
         if(arr[i] == '\t') {
             for (int j = 1; j < TAB_STOP; ++j) {
                 arr[i++] = ' ';
-                shift(i);
+                shiftRight(i);
             }
             arr[i++] = ' ';
         }
         i++;
+    }
+}
+
+void shiftLeft(int i) {
+    int j = i-7;
+    while(arr[i] != '\n') {
+        arr[j++] = arr[i];
+        arr[i++] = '\0';
+    }
+    arr[j] = '\n';
+}
+
+void entab() {
+   int i = 0;
+   int sCounter = 0;
+   while(arr[i] != '\n') {
+       if(arr[i] == ' ') {
+           sCounter++;
+       }
+       if(sCounter == 8) {
+           arr[i-sCounter+1] = '\t';
+           shiftLeft(i+1);
+           sCounter = 0;
+       }
+       i++;
+   }
+}
+
+void foldLongInput() {
+    int c = 0;
+    int i = 0;
+    while (arr[i] != '\n') {
+        if(c == SPLIT_COL) {
+            if(arr[i] != '\t' && arr[i] != ' ') {
+                arr[i] = '-';
+                shiftRight(i);
+            }
+            arr[++i] = '\n';
+            c = 0;
+        }
+        i++;
+        c++;
     }
 }
 
@@ -107,9 +150,11 @@ int main() {
     while((c = getchar()) != 48) {
         arr[i++] = c;
     }
-    detab();
+    //detab();
+    //entab();
     //reverse();
-    for (int j = 0; arr[j] != '\n'; ++j) {
+    foldLongInput();
+    for (int j = 0; arr[j] != '\0'; ++j) {
         printf("%c", arr[j]);
     }
     return 0;
