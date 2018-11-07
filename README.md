@@ -1,1 +1,1 @@
-Here I implemented solutions to homework from book C programming language and also this repo contains algorithms, data structures and bit manipulations.
+Here I implemented solutions to homework from book `The C programming language 2` and also this repo contains algorithms, data structures and bit manipulations.
