@@ -197,6 +197,8 @@ char getOpenChar(char closingChar) {
 
 void checkSyntax() {
     char stack[255] = {};
+    char quotes[10] = {};
+    int q = 0;
     int s = 0;
     int i = 0;
     while(arr[i] != '\000') {
@@ -204,26 +206,31 @@ void checkSyntax() {
             case '(':
             case '{':
             case '[':
-            case '"':
-            case '\'':
-                stack[s++] = arr[i++];
-                continue;
-        }
-        switch(arr[i]) {
+                stack[s++] = arr[i];
+                break;
             case ')':
             case '}':
             case ']':
-            case '"':
-            case '\'':
-                if(stack[s-1] != getOpenChar(arr[i])) {
-                    printf("Error unbalanced %c !", arr[i]);
-                    return;
-                } else
+                if(stack[s-1] == getOpenChar(arr[i])) {
                     s--;
+                }
+                break;
+            case '"':
+                if(quotes[q-1] != '"') {
+                    quotes[q++] = arr[i];
+                } else
+                    q--;
+                break;
+            case '\'':
+                if(quotes[q-1] != '\'') {
+                    quotes[q++] = arr[i];
+                } else
+                    q--;
+                break;
         }
         i++;
     }
-    if(s == 0) {
+    if(s == 0 && q == 0) {
         printf("Success!");
     } else
         printf("Error!");
