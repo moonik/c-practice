@@ -44,7 +44,7 @@ void readChar() {
     int c;
     int wLength = 0;
     int j = 0;
-    while((c = getchar()) != 48) {
+    while ((c = getchar()) != 48) {
         ++chars[c-'0'];
         if (c == ' ' || c == '\t' || c == '\n') {
             wordLengths[j++] = wLength;
@@ -68,11 +68,11 @@ void readChar() {
 void reverse() {
     int i = 0; //sizeof(arr)/sizeof(arr[0) OR
     int j = 9;
-    while(arr[--j] != '\n') {
+    while (arr[--j] != '\n') {
         ;
     }
     --j;
-    while(i < j) {
+    while (i < j) {
         char tmp = arr[i];
         arr[i++] = arr[j];
         arr[j--] = tmp;
@@ -92,8 +92,8 @@ void shiftRight(int i) {
 
 void detab() {
     int i = 0;
-    while(arr[i] != '\n') {
-        if(arr[i] == '\t') {
+    while (arr[i] != '\n') {
+        if (arr[i] == '\t') {
             for (int j = 1; j < TAB_STOP; ++j) {
                 arr[i++] = ' ';
                 shiftRight(i);
@@ -106,7 +106,7 @@ void detab() {
 
 void shiftLeft(int i) {
     int j = i-7;
-    while(arr[i] != '\n') {
+    while (arr[i] != '\n') {
         arr[j++] = arr[i];
         arr[i++] = '\0';
     }
@@ -116,11 +116,11 @@ void shiftLeft(int i) {
 void entab() {
    int i = 0;
    int sCounter = 0;
-   while(arr[i] != '\n') {
-       if(arr[i] == ' ') {
+   while (arr[i] != '\n') {
+       if (arr[i] == ' ') {
            sCounter++;
        }
-       if(sCounter == 8) {
+       if (sCounter == 8) {
            arr[i-sCounter+1] = '\t';
            shiftLeft(i+1);
            sCounter = 0;
@@ -134,9 +134,9 @@ void foldLongInput() {
     int i = 0;
     int sIndex = 0;
     while (arr[i] != '\000') {
-        if(c == SPLIT_COL) {
-            if(arr[i] != '\t' && arr[i] != ' ') {
-                if(i - sIndex > 2) {
+        if (c == SPLIT_COL) {
+            if (arr[i] != '\t' && arr[i] != ' ') {
+                if (i - sIndex > 2) {
                     shiftRight(i);
                     arr[i] = '-';
                     shiftRight(i+1);
@@ -147,7 +147,7 @@ void foldLongInput() {
                 arr[i] = '\n';
             c = -1;
         }
-        if(arr[i] == ' ' || arr[i] == '\t' || arr[i] == '\n') {
+        if (arr[i] == ' ' || arr[i] == '\t' || arr[i] == '\n') {
             sIndex = i;
         }
         i++;
@@ -159,17 +159,17 @@ void removeComments() {
     int i = 0;
     char n[255];
     int j = 0;
-    while(arr[i] != '\000') {
-        if(arr[i] == '/' && arr[i+1] == '/') {
-            while(arr[++i] != '\n') {
+    while (arr[i] != '\000') {
+        if (arr[i] == '/' && arr[i+1] == '/') {
+            while (arr[++i] != '\n') {
                 ;
             }
             i++;
         }
-        if(arr[i] == '/' && arr[i+1] == '*') {
+        if (arr[i] == '/' && arr[i+1] == '*') {
             bool isEnd = false;
-            while(!isEnd) {
-                if(arr[i] == '*' && arr[i+1] == '/') {
+            while (!isEnd) {
+                if (arr[i] == '*' && arr[i+1] == '/') {
                     isEnd = true;
                 }
                 i += 3;
@@ -184,7 +184,7 @@ void removeComments() {
 }
 
 char getOpenChar(char closingChar) {
-    switch(closingChar) {
+    switch (closingChar) {
         case ')':
             return '(';
         case '}':
@@ -244,16 +244,16 @@ void htoi(char str[]) {
     int i = 0;
     int number = 0;
     int power = length-1;
-    if(length > 2) {
-        if(str[1] == 'x' || str[1] == 'X') {
+    if (length > 2) {
+        if (str[1] == 'x' || str[1] == 'X') {
             i = 2;
             power -= 2;
         }
     }
-    while(str[i] != '\0') {
+    while (str[i] != '\0') {
         int p = pow(16, power--);
-        if(str[i]-'0' > 9) {
-            number += (toupper(str[i])-57+2) * p;
+        if (str[i]-'0' > 9) {
+            number += (toupper(str[i])-57+2) * p; // converts from A...F to int value
         } else
             number += (str[i]-'0') * p;
         i++;
@@ -264,7 +264,7 @@ void htoi(char str[]) {
 void readFromConsole() {
     int c;
     int i = 0;
-    while((c = getchar()) != 48) {
+    while ((c = getchar()) != 48) {
         arr[i++] = c;
     }
 }
@@ -276,7 +276,7 @@ void printArray() {
 }
 
 int main() {
-    char s[] = "0xff";
+    char s[] = "0x7fabc";
     htoi(s);
     return 0;
 }
