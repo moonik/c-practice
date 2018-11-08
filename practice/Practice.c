@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <ctype.h>
+#include <math.h>
+#include <string.h>
 
 #define LOWER       0
 #define UPPER       300
@@ -236,22 +239,45 @@ void checkSyntax() {
         printf("Error!");
 }
 
-int main() {
-    //readChar();
+void htoi(char str[]) {
+    int length = strlen(str);
+    int i = 0;
+    int number = 0;
+    int power = length-1;
+    if(length > 2) {
+        if(str[1] == 'x' || str[1] == 'X') {
+            i = 2;
+            power -= 2;
+        }
+    }
+    while(str[i] != '\0') {
+        int p = pow(16, power--);
+        if(str[i]-'0' > 9) {
+            number += (toupper(str[i])-57+2) * p;
+        } else
+            number += (str[i]-'0') * p;
+        i++;
+    }
+    printf("%d", number);
+}
+
+void readFromConsole() {
     int c;
     int i = 0;
     while((c = getchar()) != 48) {
         arr[i++] = c;
     }
-    //detab();
-    //entab();
-    //reverse();
-    //foldLongInput();
-    //removeComments();
-    checkSyntax();
-//    for (int j = 0; arr[j] != '\000'; ++j) {
-//        printf("%c", arr[j]);
-//    }
+}
+
+void printArray() {
+    for (int j = 0; arr[j] != '\000'; ++j) {
+        printf("%c", arr[j]);
+    }
+}
+
+int main() {
+    char s[] = "0xff";
+    htoi(s);
     return 0;
 }
 
