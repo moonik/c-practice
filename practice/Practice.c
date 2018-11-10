@@ -114,19 +114,19 @@ void shiftLeft(int i) {
 }
 
 void entab() {
-   int i = 0;
-   int sCounter = 0;
-   while (arr[i] != '\n') {
-       if (arr[i] == ' ') {
-           sCounter++;
-       }
-       if (sCounter == 8) {
-           arr[i-sCounter+1] = '\t';
-           shiftLeft(i+1);
-           sCounter = 0;
-       }
-       i++;
-   }
+    int i = 0;
+    int sCounter = 0;
+    while (arr[i] != '\n') {
+        if (arr[i] == ' ') {
+            sCounter++;
+        }
+        if (sCounter == 8) {
+            arr[i-sCounter+1] = '\t';
+            shiftLeft(i+1);
+            sCounter = 0;
+        }
+        i++;
+    }
 }
 
 void foldLongInput() {
@@ -275,9 +275,73 @@ void printArray() {
     }
 }
 
-int main() {
-    char s[] = "0x7fabc";
-    htoi(s);
-    return 0;
+void toBinary(int n) {
+    while (n) {
+        if (n & 1)
+            printf("1");
+        else
+            printf("0");
+
+        n >>= 1;
+    }
 }
 
+/*
+ * returns n bits from position p
+ */
+unsigned getBits(unsigned x, int p, int n) {
+    return (x >> (p+1-n)) & ~(~0 << n);
+}
+
+/*
+ * eturns x with the n bits that begin at position p set to the rightmost n bits of y, leaving the other bits unchanged.
+ */
+unsigned setBits(unsigned x, int p, int n, unsigned y) {
+    return x & ~(~(~0 << n) << (p+1-n)) | ( y & ~(~0<<n)) << (p+1-n);
+}
+
+unsigned invert(unsigned x, int p, int n) {
+    int invertMask = 0xFF >> (p-1);
+    int mask = 0 << n;
+    return ((invertMask ^ mask) << (p-1)) ^ x;
+}
+
+unsigned rotr(unsigned x, unsigned n) {
+    return (x >> n % 32) | (x << (32-n) % 32);
+}
+
+double stringToFloat(const char s[]) {
+    double value;
+    double power;
+    double exponent = 1;
+    int i = 0;
+    int sign = s[i] == '-' ? -1 : 1;
+    for (value = 0.0; s[i] > '0' && s[i] < '9'; i++) {
+        value = 10.0 * value + (s[i] - '0');
+    }
+    if (s[i] == '.') {
+        i++;
+    }
+    for (power = 1.0; s[i] > '0' && s[i] < '9'; i++) {
+        value = 10.0 * value + (s[i] - '0');
+        power *= 10.0;
+    }
+
+    if (strlen(s) > i && s[i++] == 'e') {
+        int eSign = s[i] == '-' ? -1 : 1;
+        if (eSign < 0) {
+            i++;
+        }
+        int n = 0;
+        for (; s[i] != '\0'; ++i) {
+            n = n*10 + (s[i] - '0');
+        }
+        exponent = pow(10, eSign * n);
+    }
+    return (sign * value / power) * exponent;
+}
+
+int main() {
+    printf("%f", stringToFloat("12.1e2"));
+    return 0;
+}

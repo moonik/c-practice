@@ -20,7 +20,6 @@ int checkIfOppositeSign(int x, int y);
 int extendSign(int x);
 int signExtendingWithBitWidth(int x);
 void setOrClearBits();
-void printBinary(int n);
 void merge(int a, int b, int mask);
 
 float myAbs(float x) {
