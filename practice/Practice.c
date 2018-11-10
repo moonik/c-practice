@@ -65,17 +65,13 @@ void readChar() {
     }
 }
 
-void reverse() {
+void reverse(char s[]) {
     int i = 0; //sizeof(arr)/sizeof(arr[0) OR
-    int j = 9;
-    while (arr[--j] != '\n') {
-        ;
-    }
-    --j;
+    int j = strlen(s)-1;
     while (i < j) {
-        char tmp = arr[i];
-        arr[i++] = arr[j];
-        arr[j--] = tmp;
+        char tmp = s[i];
+        s[i++] = s[j];
+        s[j--] = tmp;
     }
 }
 
@@ -239,6 +235,9 @@ void checkSyntax() {
         printf("Error!");
 }
 
+/*
+ * converts hexadecimal string to decimal value
+ */
 void htoi(char str[]) {
     int length = strlen(str);
     int i = 0;
@@ -310,6 +309,51 @@ unsigned rotr(unsigned x, unsigned n) {
     return (x >> n % 32) | (x << (32-n) % 32);
 }
 
+char getHexaChar(int c) {
+    switch (c) {
+        case 10:
+            return 'A';
+        case 11:
+            return 'B';
+        case 12:
+            return 'C';
+        case 13:
+            return 'D';
+        case 14:
+            return 'E';
+        default:
+            return 'F';
+    }
+}
+
+/*
+ * returns string s containing number in base b
+ */
+void convert(int number, char s[], int b) {
+    int i = 0;
+    while (number > 0) {
+        int n = number % b;
+        if (n > 9) {
+            s[i++] = getHexaChar(n);
+        } else
+            s[i++] = n + '0';
+        number /= b;
+    }
+    switch (b) {
+        case 2:
+            s[i++] = 'b';
+            s[i++] = '0';
+            break;
+        case 8:
+            s[i++] = '0';
+            break;
+        case 16:
+            s[i++] = 'x';
+            s[i++] = '0';
+    }
+    reverse(s);
+}
+
 double stringToFloat(const char s[]) {
     double value;
     double power;
@@ -342,6 +386,8 @@ double stringToFloat(const char s[]) {
 }
 
 int main() {
-    printf("%f", stringToFloat("12.1e2"));
+    char s[256];
+    convert(242342, s, 2);
+    printf("%s", s);
     return 0;
 }
