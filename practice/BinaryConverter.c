@@ -2,6 +2,21 @@
 #include <stdbool.h>
 #include <string.h>
 
+void format(int number, char *s[], int *i, int b) {
+    if (number == 0) {
+        return;
+    }
+    int n = number % b;
+    number /= b;
+    format(number, s, i, b);
+    (*s)[(*i)++] = n + '0';
+}
+
+void recursiveFormater(int number, char s[], int b) {
+    int i = 0;
+    format(number, &s, &i, b);
+    s[i] = '\0';
+}
 
 void reverse(char s[]) {
     int i = 0; //sizeof(arr)/sizeof(arr[0) OR
@@ -90,8 +105,7 @@ void toBinaryString(int number, char s[], int b) {
     if (b < 16) {
         i = addLeadingDigits(s, size, i, leading);
     }
-
-    addBaseRepresentation(s, i, b);
-
+    addBaseRepresentation(s, i++, b);
     reverse(s);
+    s[++i] = '\0';
 }

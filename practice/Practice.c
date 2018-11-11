@@ -22,6 +22,7 @@
   (byte & 0x01 ? '1' : '0')
 
 extern toBinaryString(int number, char s[], int b);
+extern recursiveFormater(int number, char s[], int b);
 
 char arr[255];
 
@@ -333,8 +334,9 @@ double stringToFloat(const char s[]) {
 
 int main() {
     char s[256];
-    toBinaryString(-64, s, 2);
+    recursiveFormater(3, s, 2);
+    //toBinaryString(3, s, 2);
     printf("%s\n", s);
-    printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(-64));
+    //printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(-64));
     return 0;
 }
