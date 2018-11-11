@@ -338,31 +338,7 @@ int addLeadingDigits(char s[], int size, int i, char leading) {
     return i;
 }
 
-void convert(int number, char s[], int b) {
-    int i = 0;
-    int size = sizeof(number) * 2;
-    bool isPositive = number > 0 ? true : false;
-    if (!isPositive) {
-        number = -number;
-    }
-    while (number > 0) {
-        int n = number % b;
-        if (n > 9) {
-            s[i++] = getHexaChar(n);
-        } else
-            s[i++] = n + '0';
-        number /= b;
-    }
-
-    char leading = '0';
-    if (!isPositive) {
-        leading = '1';
-    }
-
-    if (b < 16) {
-        i = addLeadingDigits(s, size, i, leading);
-    }
-
+void addBaseRepresentation(char s[], int i, int b) {
     switch (b) {
         case 2:
             s[i++] = 'b';
@@ -376,6 +352,43 @@ void convert(int number, char s[], int b) {
             s[i++] = 'x';
             s[i] = '0';
     }
+}
+
+int writeToArray(char s[], int number, int b) {
+    int i = 0;
+    while (number > 0) {
+        int n = number % b;
+        if (n > 9) {
+            s[i++] = getHexaChar(n);
+        } else
+            s[i++] = n + '0';
+        number /= b;
+    }
+    return i;
+}
+
+void convert(int number, char s[], int b) {
+    int i = 0;
+    int size = sizeof(number) * 2;
+    bool isPositive = number > 0 ? true : false;
+
+    if (!isPositive) {
+        number = -number;
+    }
+
+    i = writeToArray(s, number, b);
+
+    char leading = '0';
+    if (!isPositive) {
+        leading = '1';
+    }
+
+    if (b < 16) {
+        i = addLeadingDigits(s, size, i, leading);
+    }
+
+    addBaseRepresentation(s, i, b);
+
     reverse(s);
 }
 
@@ -412,8 +425,8 @@ double stringToFloat(const char s[]) {
 
 int main() {
     char s[256];
-    convert(64, s, 8);
+    convert(-64, s, 2);
     printf("%s\n", s);
-    printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(64));
+    printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(-64));
     return 0;
 }
