@@ -21,6 +21,8 @@
   (byte & 0x02 ? '1' : '0'), \
   (byte & 0x01 ? '1' : '0')
 
+extern toBinaryString(int number, char s[], int b);
+
 char arr[255];
 
 /*
@@ -72,16 +74,6 @@ void readChar() {
     printf("\nCharacter frequencies:\n");
     for (int l = 0; l <ASCII_CHARS; ++l) {
         printf("%c = %d\n", '0'+l, chars[l]);
-    }
-}
-
-void reverse(char s[]) {
-    int i = 0; //sizeof(arr)/sizeof(arr[0) OR
-    int j = strlen(s)-1;
-    while (i < j) {
-        char tmp = s[i];
-        s[i++] = s[j];
-        s[j--] = tmp;
     }
 }
 
@@ -308,90 +300,6 @@ unsigned rotr(unsigned x, unsigned n) {
     return (x >> n % 32) | (x << (32-n) % 32);
 }
 
-char getHexaChar(int c) {
-    switch (c) {
-        case 10:
-            return 'A';
-        case 11:
-            return 'B';
-        case 12:
-            return 'C';
-        case 13:
-            return 'D';
-        case 14:
-            return 'E';
-        default:
-            return 'F';
-    }
-}
-
-/*
- * returns string s containing number in base b
- */
-
-int addLeadingDigits(char s[], int size, int i, char leading) {
-    int l = strlen(s);
-    int j = size - l;
-    for (; j > 0 ; j--) {
-        s[i++] = leading;
-    }
-    return i;
-}
-
-void addBaseRepresentation(char s[], int i, int b) {
-    switch (b) {
-        case 2:
-            s[i++] = 'b';
-            s[i] = '0';
-            break;
-        case 8:
-            s[i++] = 'o';
-            s[i] = '0';
-            break;
-        case 16:
-            s[i++] = 'x';
-            s[i] = '0';
-    }
-}
-
-int writeToArray(char s[], int number, int b) {
-    int i = 0;
-    while (number > 0) {
-        int n = number % b;
-        if (n > 9) {
-            s[i++] = getHexaChar(n);
-        } else
-            s[i++] = n + '0';
-        number /= b;
-    }
-    return i;
-}
-
-void convert(int number, char s[], int b) {
-    int i = 0;
-    int size = sizeof(number) * 2;
-    bool isPositive = number > 0 ? true : false;
-
-    if (!isPositive) {
-        number = -number;
-    }
-
-    i = writeToArray(s, number, b);
-
-    char leading = '0';
-    if (!isPositive) {
-        leading = '1';
-    }
-
-    if (b < 16) {
-        i = addLeadingDigits(s, size, i, leading);
-    }
-
-    addBaseRepresentation(s, i, b);
-
-    reverse(s);
-}
-
 double stringToFloat(const char s[]) {
     double value;
     double power;
@@ -425,7 +333,7 @@ double stringToFloat(const char s[]) {
 
 int main() {
     char s[256];
-    convert(-64, s, 2);
+    toBinaryString(-64, s, 2);
     printf("%s\n", s);
     printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(-64));
     return 0;
