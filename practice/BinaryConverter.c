@@ -14,12 +14,18 @@ void format(int number, char *s[], int *i, int b) {
 
 void recursiveFormater(int number, char s[], int b) {
     int i = 0;
+
+    bool isPositive = number > 0 ? true : false;
+    if (!isPositive) {
+        number = -number;
+        s[i++] = '1';
+    }
     format(number, &s, &i, b);
     s[i] = '\0';
 }
 
 void reverse(char s[]) {
-    int i = 0; //sizeof(arr)/sizeof(arr[0) OR
+    int i = 0;
     int j = strlen(s)-1;
     while (i < j) {
         char tmp = s[i];
@@ -45,42 +51,39 @@ char getHexaChar(int c) {
     }
 }
 
-int addLeadingDigits(char s[], int size, int i, char leading) {
+void addLeadingDigits(char s[], int size, int *i, char leading) {
     int l = strlen(s);
     int j = size - l;
     for (; j > 0 ; j--) {
-        s[i++] = leading;
+        s[(*i)++] = leading;
     }
-    return i;
 }
 
-void addBaseRepresentation(char s[], int i, int b) {
+void addBaseRepresentation(char s[], int *i, int b) {
     switch (b) {
         case 2:
-            s[i++] = 'b';
-            s[i] = '0';
+            s[(*i)++] = 'b';
+            s[*i] = '0';
             break;
         case 8:
-            s[i++] = 'o';
-            s[i] = '0';
+            s[(*i)++] = 'o';
+            s[*i] = '0';
             break;
         case 16:
-            s[i++] = 'x';
-            s[i] = '0';
+            s[(*i)++] = 'x';
+            s[*i] = '0';
     }
 }
 
-int writeToArray(char s[], int number, int b) {
-    int i = 0;
+void writeToArray(char s[], int number, int b, int *i) {
     while (number > 0) {
         int n = number % b;
         if (n > 9) {
-            s[i++] = getHexaChar(n);
+            s[(*i)++] = getHexaChar(n);
         } else
-            s[i++] = n + '0';
+            s[(*i)++] = n + '0';
         number /= b;
     }
-    return i;
 }
 
 /*
@@ -95,17 +98,20 @@ void toBinaryString(int number, char s[], int b) {
         number = -number;
     }
 
-    i = writeToArray(s, number, b);
+    writeToArray(s, number, b, &i);
 
     char leading = '0';
     if (!isPositive) {
         leading = '1';
     }
 
-    if (b < 16) {
-        i = addLeadingDigits(s, size, i, leading);
+    if (b == 2 || b == 3) {
+        addLeadingDigits(s, size, &i, leading);
     }
-    addBaseRepresentation(s, i++, b);
+
+    addBaseRepresentation(s, &i, b);
+
     reverse(s);
+
     s[++i] = '\0';
 }

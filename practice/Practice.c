@@ -334,9 +334,9 @@ double stringToFloat(const char s[]) {
 
 int main() {
     char s[256];
-    recursiveFormater(3, s, 2);
-    //toBinaryString(3, s, 2);
+    recursiveFormater(64, s, 2);
+    //toBinaryString(64, s, 2);
     printf("%s\n", s);
-    //printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(-64));
+    printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(64));
     return 0;
 }
