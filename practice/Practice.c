@@ -10,6 +10,16 @@
 #define ASCII_CHARS 127
 #define TAB_STOP    8
 #define SPLIT_COL   10
+#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
+#define BYTE_TO_BINARY(byte)  \
+  (byte & 0x80 ? '1' : '0'), \
+  (byte & 0x40 ? '1' : '0'), \
+  (byte & 0x20 ? '1' : '0'), \
+  (byte & 0x10 ? '1' : '0'), \
+  (byte & 0x08 ? '1' : '0'), \
+  (byte & 0x04 ? '1' : '0'), \
+  (byte & 0x02 ? '1' : '0'), \
+  (byte & 0x01 ? '1' : '0')
 
 char arr[255];
 
@@ -274,17 +284,6 @@ void printArray() {
     }
 }
 
-void toBinary(int n) {
-    while (n) {
-        if (n & 1)
-            printf("1");
-        else
-            printf("0");
-
-        n >>= 1;
-    }
-}
-
 /*
  * returns n bits from position p
  */
@@ -329,8 +328,23 @@ char getHexaChar(int c) {
 /*
  * returns string s containing number in base b
  */
+
+int addLeadingDigits(char s[], int size, int i, char leading) {
+    int l = strlen(s);
+    int j = size - l;
+    for (; j > 0 ; j--) {
+        s[i++] = leading;
+    }
+    return i;
+}
+
 void convert(int number, char s[], int b) {
     int i = 0;
+    int size = sizeof(number) * 2;
+    bool isPositive = number > 0 ? true : false;
+    if (!isPositive) {
+        number = -number;
+    }
     while (number > 0) {
         int n = number % b;
         if (n > 9) {
@@ -339,17 +353,28 @@ void convert(int number, char s[], int b) {
             s[i++] = n + '0';
         number /= b;
     }
+
+    char leading = '0';
+    if (!isPositive) {
+        leading = '1';
+    }
+
+    if (b < 16) {
+        i = addLeadingDigits(s, size, i, leading);
+    }
+
     switch (b) {
         case 2:
             s[i++] = 'b';
-            s[i++] = '0';
+            s[i] = '0';
             break;
         case 8:
-            s[i++] = '0';
+            s[i++] = 'o';
+            s[i] = '0';
             break;
         case 16:
             s[i++] = 'x';
-            s[i++] = '0';
+            s[i] = '0';
     }
     reverse(s);
 }
@@ -387,7 +412,8 @@ double stringToFloat(const char s[]) {
 
 int main() {
     char s[256];
-    convert(242342, s, 2);
-    printf("%s", s);
+    convert(64, s, 8);
+    printf("%s\n", s);
+    printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(64));
     return 0;
 }
