@@ -2,27 +2,48 @@
 #include <stdbool.h>
 #include <string.h>
 
-void format(int number, char *s[], int *i, int b) {
+void format(int number, char *s, int b) {
     if (number == 0) {
         return;
     }
     int n = number % b;
     number /= b;
-    format(number, s, i, b);
-    (*s)[(*i)++] = n + '0';
+    format(number, s+1, b);
+    *s = n + '0';
 }
 
-void recursiveFormater(int number, char s[], int b) {
-    int i = 0;
-
+void recursiveFormatter(int number, char *s, int b) {
     bool isPositive = number > 0 ? true : false;
     if (!isPositive) {
         number = -number;
-        s[i++] = '1';
+        *s = '1';
+        s++;
     }
-    format(number, &s, &i, b);
-    s[i] = '\0';
+    format(number, s, b);
+    //*s = '\0'; -- when set the string is empty
 }
+
+//void format(int number, char *s[], int *i, int b) {
+//    if (number == 0) {
+//        return;
+//    }
+//    int n = number % b;
+//    number /= b;
+//    format(number, s, i, b);
+//    (*s)[(*i)++] = n + '0';
+//}
+//
+//void recursiveFormater(int number, char s[], int b) {
+//    int i = 0;
+//
+//    bool isPositive = number > 0 ? true : false;
+//    if (!isPositive) {
+//        number = -number;
+//        s[i++] = '1';
+//    }
+//    format(number, &s, &i, b);
+//    s[i] = '\0';
+//}
 
 void reverse(char s[]) {
     int i = 0;

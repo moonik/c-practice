@@ -21,8 +21,8 @@
   (byte & 0x02 ? '1' : '0'), \
   (byte & 0x01 ? '1' : '0')
 
-extern toBinaryString(int number, char s[], int b);
-extern recursiveFormater(int number, char s[], int b);
+extern void toBinaryString(int number, char s[], int b);
+extern void recursiveFormatter(int number, char *s, int b);
 
 char arr[255];
 
@@ -332,11 +332,24 @@ double stringToFloat(const char s[]) {
     return (sign * value / power) * exponent;
 }
 
+void e(char *s) {
+    for (int i = 0; i < 10; ++i) {
+        *s = i + '0';
+        s++;
+    }
+}
+
+void pointerexp() {
+    char s[256];
+    e(s);
+    printf("%s", s);
+}
+
 int main() {
     char s[256];
-    recursiveFormater(64, s, 2);
+    recursiveFormatter(64, s, 2);
     //toBinaryString(64, s, 2);
     printf("%s\n", s);
-    printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(64));
+    //printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(64));
     return 0;
 }
