@@ -368,8 +368,8 @@ void appendString(char *str1, char *str2) {
  */
 int isAtTheEnd(char *str1, char *str2) {
     unsigned index = (unsigned) (strlen(str1) - strlen(str2));
-    while (*(str1+index)) {
-        if (*(str1+index) != *str2) {
+    while (str1[index]) {
+        if (str1[index] != *str2) {
             return 0;
         }
         index++;
@@ -404,6 +404,16 @@ int compare(char *s, char *t, unsigned n) {
         n--;
     }
     return 1;
+}
+
+static void reverse(char *s) {
+    char *right = &s[strlen(s)-1];
+    char *left = s;
+    while (left < right) {
+        char tmp = *right;
+        *right-- = *left;
+        *left++ = tmp;
+    }
 }
 
 int main() {
