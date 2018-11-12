@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define LOWER       0
 #define UPPER       300
@@ -332,7 +333,7 @@ double stringToFloat(const char s[]) {
     return (sign * value / power) * exponent;
 }
 
-void e(char *s) {
+void testPointer(char *s) {
     for (int i = 0; i < 10; ++i) {
         *s = i + '0';
         s++;
@@ -341,15 +342,70 @@ void e(char *s) {
 
 void pointerexp() {
     char s[256];
-    e(s);
+    testPointer(s);
     printf("%s", s);
 }
 
+void experiment() {
+    int s[] = {1, 9, 3, 4};
+    int *p = s;
+    int c = *p++;
+    int c2 = --*p;
+    printf("%d", c2);
+}
+
+void appendString(char *str1, char *str2) {
+    while (*str1) {
+        str1++;
+    }
+    while ((*str1++ = *str2++)) {
+        ;
+    }
+}
+
+/*
+ * returns 1 if the string str2 occurs at the end of the string str1, and zero otherwise
+ */
+int isAtTheEnd(char *str1, char *str2) {
+    unsigned index = (unsigned) (strlen(str1) - strlen(str2));
+    while (*(str1+index)) {
+        if (*(str1+index) != *str2) {
+            return 0;
+        }
+        index++;
+        str2++;
+    }
+    return 1;
+}
+
+/*
+ *  copies at most n characters of t to s.
+ */
+void copyTo(char *s, char *t, unsigned n) {
+    while (*s) {
+        s++;
+    }
+    while (n > 0) {
+        *s++ = *t++;
+        n--;
+    }
+}
+
+/*
+ * compares from first n chars of string s with t
+ * returns 1 if equal and 0 if otherwise
+ */
+
+int compare(char *s, char *t, unsigned n) {
+    while (n > 0) {
+        if (*s++ != *t++) {
+            return 0;
+        }
+        n--;
+    }
+    return 1;
+}
+
 int main() {
-    char s[256];
-    recursiveFormatter(64, s, 2);
-    //toBinaryString(64, s, 2);
-    printf("%s\n", s);
-    //printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(64));
     return 0;
 }
