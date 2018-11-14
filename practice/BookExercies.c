@@ -25,6 +25,9 @@
 extern void toBinaryString(int number, char s[], int b);
 extern void recursiveFormatter(int number, char *s, int b);
 
+void sayHello(void (*say)());
+void printString();
+void printInt();
 char arr[255];
 
 /*
@@ -445,7 +448,25 @@ void sort() {
     }
 }
 
+void sayHello(void (*say)()) {
+    (*say)();
+}
+
+void printString() {
+    printf("Aloha");
+}
+
+void printInt() {
+    printf("123");
+}
+
+void saySomething(bool isInt) {
+    if (isInt) {
+        sayHello((void (*)()) printInt);
+    } else
+        sayHello((void (*)()) printString);
+}
+
 int main() {
-    sort();
     return 0;
 }
