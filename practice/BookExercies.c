@@ -416,6 +416,36 @@ static void reverse(char *s) {
     }
 }
 
+void sort() {
+    char firstWord[] = "abcde";
+    char secondWord[] = "a";
+    char thirdWord[] = "bc";
+    char *pointers[255];
+
+    pointers[0] = firstWord;
+    pointers[1] = secondWord;
+    pointers[2] = thirdWord;
+
+    //pointers[3] = "\0";
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = i; j > 0; j--) {
+            int first = strlen(pointers[j]);
+            int second = strlen(pointers[j-1]);
+            if (second < first) {
+                char *tmp = pointers[j];
+                pointers[j] = pointers[j-1];
+                pointers[j-1] = tmp;
+            } else
+                break;
+        }
+    }
+    for (int k = 0; k < 3; ++k) {
+        printf("%s\n", pointers[k]);
+    }
+}
+
 int main() {
+    sort();
     return 0;
 }
