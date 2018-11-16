@@ -29,6 +29,10 @@ void sayHello(void (*say)());
 void printString();
 void printInt();
 char arr[255];
+struct person {
+    char* name;
+    int age;
+};
 
 /*
  * Practice exercises from book The c programming language 2
@@ -467,6 +471,29 @@ void saySomething(bool isInt) {
         sayHello((void (*)()) printString);
 }
 
+void sortStruct(struct person* family, int length) {
+    for (int i = 0; i < length; ++i) {
+        for (int j = i; j > 0; j--) {
+            if (family[j].age < family[j-1].age) {
+                struct person tmp = family[j];
+                family[j] = family[j-1];
+                family[j-1] = tmp;
+            } else
+                break;
+        }
+    }
+}
+
 int main() {
+    struct person family[] = {
+            {"Roman", 22},
+            {"Test", 19},
+            {"Test2", 8}
+    };
+
+    sortStruct(family, sizeof(family)/ sizeof(family[0]));
+    for (int i = 0; i < 3; ++i) {
+        printf("Person name %s, person age %d\n", family[i].name, family[i].age);
+    }
     return 0;
 }
