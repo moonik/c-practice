@@ -22,17 +22,26 @@
   (byte & 0x02 ? '1' : '0'), \
   (byte & 0x01 ? '1' : '0')
 
+typedef char* String;
+typedef struct person {
+    String name;
+    int age;
+    union salary {
+        int iSalary;
+        float fSalary;
+        String sSalary;
+        int type;
+    } salary;
+    unsigned int gender: 1;
+} Person;
+
 extern void toBinaryString(int number, char s[], int b);
-extern void recursiveFormatter(int number, char *s, int b);
+extern void recursiveFormatter(int number, String s, int b);
 
 void sayHello(void (*say)());
 void printString();
 void printInt();
 char arr[255];
-struct person {
-    char* name;
-    int age;
-};
 
 /*
  * Practice exercises from book The c programming language 2
@@ -340,7 +349,7 @@ double stringToFloat(const char s[]) {
     return (sign * value / power) * exponent;
 }
 
-void testPointer(char *s) {
+void testPointer(String s) {
     for (int i = 0; i < 10; ++i) {
         *s = i + '0';
         s++;
@@ -361,7 +370,7 @@ void experiment() {
     printf("%d", c2);
 }
 
-void appendString(char *str1, char *str2) {
+void appendString(String str1, String str2) {
     while (*str1) {
         str1++;
     }
@@ -373,7 +382,7 @@ void appendString(char *str1, char *str2) {
 /*
  * returns 1 if the string str2 occurs at the end of the string str1, and zero otherwise
  */
-int isAtTheEnd(char *str1, char *str2) {
+int isAtTheEnd(String str1, String str2) {
     unsigned index = (unsigned) (strlen(str1) - strlen(str2));
     while (str1[index]) {
         if (str1[index] != *str2) {
@@ -388,7 +397,7 @@ int isAtTheEnd(char *str1, char *str2) {
 /*
  *  copies at most n characters of t to s.
  */
-void copyTo(char *s, char *t, unsigned n) {
+void copyTo(String s, String t, unsigned n) {
     while (*s) {
         s++;
     }
@@ -403,7 +412,7 @@ void copyTo(char *s, char *t, unsigned n) {
  * returns 1 if equal and 0 if otherwise
  */
 
-int compare(char *s, char *t, unsigned n) {
+int compare(String s, String t, unsigned n) {
     while (n > 0) {
         if (*s++ != *t++) {
             return 0;
@@ -413,7 +422,7 @@ int compare(char *s, char *t, unsigned n) {
     return 1;
 }
 
-static void reverse(char *s) {
+static void reverse(String s) {
     char *right = &s[strlen(s)-1];
     char *left = s;
     while (left < right) {
@@ -471,7 +480,7 @@ void saySomething(bool isInt) {
         sayHello((void (*)()) printString);
 }
 
-void sortStruct(struct person* family, int length) {
+void sortStruct(Person* family, int length) {
     for (int i = 0; i < length; ++i) {
         for (int j = i; j > 0; j--) {
             if (family[j].age < family[j-1].age) {
@@ -484,16 +493,34 @@ void sortStruct(struct person* family, int length) {
     }
 }
 
-int main() {
-    struct person family[] = {
-            {"Roman", 22},
-            {"Test", 19},
-            {"Test2", 8}
-    };
+void printSalary(Person* p) {
+    if (p->salary.type == 0) {
+        printf("salary: %d\n", p->salary.iSalary);
+    } else if (p->salary.type == 1) {
+        printf("%f\n", p->salary.fSalary);
+    } else
+        printf("%s\n", p->salary.sSalary);
+}
 
-    sortStruct(family, sizeof(family)/ sizeof(family[0]));
-    for (int i = 0; i < 3; ++i) {
+int main() {
+    Person family[4] = {
+            {"Roman", 22, 0, 0},
+            {"Test", 19, 0, 1},
+            {"Test2", 8, 0, 1}
+    };
+    Person* somePerson = (Person*) malloc(sizeof(Person));
+    family[0].salary.sSalary = "1500";
+    family[1].salary.sSalary = "930";
+    family[2].salary.sSalary = "3495";
+    somePerson->age = 5;
+    somePerson->name = "Test3";
+    somePerson->salary.sSalary = "2500";
+    family[3] = *somePerson;
+    sortStruct(family, sizeof(family)/sizeof(family[0]));
+    for (int i = 0; i < sizeof(family)/sizeof(family[0]); ++i) {
         printf("Person name %s, person age %d\n", family[i].name, family[i].age);
+        printSalary(&family[i]);
+        printf("gender: %c\n", family[i].gender == 0? 'M' : 'F');
     }
     return 0;
 }
