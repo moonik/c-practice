@@ -16,4 +16,5 @@ int main() {
         printf("%d\n", n->data);
         n = n->next;
     }
+    destroy(list);
 }

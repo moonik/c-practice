@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.12)
+set(CMAKE_C_STANDARD 99)
+project(queue_proj)
+set(SOURCE_FILES main.c Queue.c Queue.h tests.c tests.h)
+add_executable(queue ${SOURCE_FILES})

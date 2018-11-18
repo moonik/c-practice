@@ -236,6 +236,7 @@ void should_push_to_the_front() {
 
    //then
    assert(valueAt(list, 0) == expectedValue);
+   destroy(list);
 }
 
 void should_pop_front() {
@@ -252,6 +253,7 @@ void should_pop_front() {
 
    //then
    assert(expectedValue == actual);
+   destroy(list);
 }
 
 void should_push_back() {
@@ -266,6 +268,7 @@ void should_push_back() {
    for (int i = 1; i < 3; ++i) {
       assert(i == valueAt(list, i-1));
    }
+   destroy(list);
 }
 
 void should_pop_back() {
@@ -282,6 +285,7 @@ void should_pop_back() {
 
    //then
    assert(actualValue == expectedValue);
+   destroy(list);
 }
 
 void should_insert_at_index_value() {
@@ -301,6 +305,7 @@ void should_insert_at_index_value() {
    //then
    assert(valueAt(list, 3) == 99);
    assert(valueAt(list, 4) == 4);
+   destroy(list);
 }
 
 void should_erase_at_index() {
@@ -319,6 +324,7 @@ void should_erase_at_index() {
 
    //then
    assert(valueAt(list, index) == 4);
+   destroy(list);
 }
 
 void should_return_value_n_from_end() {
@@ -338,6 +344,7 @@ void should_return_value_n_from_end() {
 
    //then
    assert(expected == actual);
+   destroy(list);
 }
 
 void should_reverse() {
@@ -361,6 +368,7 @@ void should_reverse() {
       n--;
       current = current->next;
    }
+   destroy(list);
 }
 
 void should_remove_value() {
@@ -379,4 +387,5 @@ void should_remove_value() {
 
    //then
    assert(valueAt(list, 1) == 3);
+   destroy(list);
 }
