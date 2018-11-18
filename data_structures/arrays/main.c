@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "Vector.h"
 
 void print(Vector *vector) {
@@ -43,4 +44,6 @@ int main() {
     insert(vector, 5, -4584758);
     printf("Inserted -99 and -4584758\n");
     print(vector);
+
+    destroy(vector);
 }

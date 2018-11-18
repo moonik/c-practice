@@ -285,6 +285,7 @@ void should_pop() {
 
     //then
     assert(actual == expected);
+    destroy(vector);
 }
 
 void should_delete() {
@@ -299,7 +300,8 @@ void should_delete() {
 
     //then
     assert(at(vector, index) == expectedValueAtIndex);
-    assert(vector->size == initialSize-1);
+    assert(size(vector) == initialSize-1);
+    destroy(vector);
 }
 
 void should_remove_all_items() {
@@ -312,6 +314,7 @@ void should_remove_all_items() {
 
     //then
     assert(find(vector, itemToremove) == -1);
+    destroy(vector);
 }
 
 void should_return_item() {
@@ -325,4 +328,5 @@ void should_return_item() {
 
     //then
     assert(actual == expectedIndex);
+    destroy(vector);
 }
