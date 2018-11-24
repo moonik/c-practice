@@ -11,7 +11,8 @@ int main() {
 
     removeValue(list, 5);
 
-    Node *n = list->head;
+    Node **n = &(list->head);
+    Node **n1 = &(*n)->next;
     while (n) {
         printf("%d\n", n->data);
         n = n->next;
