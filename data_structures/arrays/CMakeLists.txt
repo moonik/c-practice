@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
 set(CMAKE_C_STANDARD 99)
 project(arrays_proj)
-set(SOURCE_FILES main.c Vector.c Vector.h ../bst/main.c)
+set(SOURCE_FILES main.c Vector.c Vector.h ../bst/main.c ../priority_queue/Heap.c ../priority_queue/main.c)
 add_executable(arrays ${SOURCE_FILES})

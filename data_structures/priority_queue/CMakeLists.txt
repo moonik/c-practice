@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.12)
+set(CMAKE_C_STANDARD 99)
+project(priority_queue)
+set(SOURCE_FILES main.c Heap.c Heap.h)
+add_executable(heap ${SOURCE_FILES})

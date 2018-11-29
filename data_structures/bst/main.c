@@ -10,6 +10,7 @@ int main() {
     insert(3);
     insert(97);
     insert(99);
+    insert(100);
     //print(root);
     //printf("Node count: %d\n", getNodeCount(root));
     //printValues(root);
@@ -17,9 +18,9 @@ int main() {
     //printf("%d\n", min(root));
     //printf("%d\n", max__(root));
     //printf("%d\n", getSuccessor(root, 283));
-    printf("%d", isBst(root));
+    //printf("%d", isBst(root));
     deleteValue(&root, 98);
-    //print(root);
+    print(root);
     destroy(root);
     return 0;
 }

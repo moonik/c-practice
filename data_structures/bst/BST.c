@@ -114,11 +114,11 @@ void deleteValue(Node **root, int value) {
         } else if ((*root)->right == NULL) { //case 1 children (left)
             Node *tmp = *root;
             *root = tmp->left;
-            freeNode(tmp);
+            freeNode(&tmp);
         } else if ((*root)->left == NULL) { //case 1 children (right)
             Node *tmp = *root;
             *root = tmp->right;
-            freeNode(tmp);
+            freeNode(&tmp);
         } else {
             //case 2 children: find minimum value in right subtree
             Node *successor = findMin((*root)->right);
