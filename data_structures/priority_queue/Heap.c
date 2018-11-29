@@ -47,14 +47,11 @@ void heapify(int *arr, int n) {
 
 void sort(int *arr, int n) {
     heapify(arr, n);
-    while (n > 0) {
+    while (n > 1) {
         int tmp = arr[0];
         arr[0] = arr[n-1];
         arr[n-1] = tmp;
         sink(arr, 0, --n);
-    }
-    for (int i = 0; i < 6; ++i) {
-        printf("%d\n", arr[i]);
     }
 }
 

@@ -9,9 +9,9 @@ int main() {
     insert(heap, 10, 105);
     int arr[6] = {5, 1, 4, 3, 0, 2};
     sort(arr, 6);
-//    for (int i = 0; i < 6; ++i) {
-//        printf("%d\n", arr[i]);
-//    }
+    for (int i = 0; i < 6; ++i) {
+        printf("%d\n", arr[i]);
+    }
 //    for (int i = 1; i <= n-1; ++i) {
 //        printf("%d\n", heap->nodes[i]->key);
 //    }
