@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
+add_subdirectory(algorithms)
 add_subdirectory(practice)
 add_subdirectory(data_structures/arrays)
 add_subdirectory(data_structures/list)

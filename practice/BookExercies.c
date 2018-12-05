@@ -502,52 +502,6 @@ void printSalary(Person* p) {
         printf("%s\n", p->salary.sSalary);
 }
 
-void merge(int* arr, int* aux, int leftStart, int mid, int rightEnd) {
-    int l = leftStart;
-    int r = mid+1;
-    int i = leftStart;
-
-    while (l <= mid && r <= rightEnd) {
-        if (arr[l] < arr[r]) {
-            aux[i++] = arr[l++];
-        } else
-            aux[i++] = arr[r++];
-    }
-
-    while (l <= mid) {
-        aux[i++] = arr[l++];
-    }
-    while (r <= rightEnd) {
-        aux[i++] = arr[r++];
-    }
-    while (leftStart <= rightEnd) {
-        arr[leftStart] = aux[leftStart];
-        leftStart++;
-    }
-}
-
-void mergeSort(int* arr, int* aux, int l, int r) {
-    if (l >= r) {
-        return;
-    }
-
-    int mid = l + (r - l) / 2;
-
-    mergeSort(arr, aux, l, mid);
-    mergeSort(arr, aux, mid+1, r);
-    merge(arr, aux, l, mid, r);
-}
-
-void sort_(int* arr, int size) {
-    int aux[size];
-    mergeSort(arr, aux, 0, size-1);
-}
-
 int main() {
-    int arr[9] = {99, 7, 4, 34, 0, 2, 3, -11, 5};
-    sort_(arr, sizeof(arr) / sizeof(int));
-    for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); ++i) {
-        printf("%d\n", arr[i]);
-    }
     return 0;
 }

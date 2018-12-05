@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
 set(CMAKE_C_STANDARD 99)
 project(practice)
-set(SOURCE_FILES BinaryConverter.c BookExercies.c)
+set(SOURCE_FILES BinaryConverter.c BookExercies.c ../algorithms/MergeSort.c)
 add_executable(practice ${SOURCE_FILES})
