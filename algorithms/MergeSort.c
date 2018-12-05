@@ -7,7 +7,7 @@ void merge(int* arr, int* aux, int leftStart, int mid, int rightEnd) {
     int i = leftStart;
 
     while (l <= mid && r <= rightEnd) {
-        if (arr[l] < arr[r]) {
+        if (arr[l] <= arr[r]) {
             aux[i++] = arr[l++];
         } else
             aux[i++] = arr[r++];
@@ -43,7 +43,7 @@ void sort_(int* arr, int size) {
 }
 
 void mergeSortTest() {
-    printf("Running Merge Sort tests...\n");
+    printf("====> Running Merge Sort tests...\n");
     int arr[9] = {99, 7, 4, 34, 0, 2, 3, -11, 5};
     int n = sizeof(arr)/ sizeof(arr[0]);
     sort_(arr, n);
@@ -52,5 +52,5 @@ void mergeSortTest() {
         printf("%d==%d\n", arr[i], expected[i]);
         assert(arr[i] == expected[i]);
     }
-    printf("Merge Sort passed!\n");
+    printf("====> Merge Sort passed!\n");
 }
