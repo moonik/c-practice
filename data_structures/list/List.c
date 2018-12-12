@@ -208,20 +208,75 @@ void removeValue(List *list, int value) {
    }
 }
 
+void sort(Node **head) {
+   __sort(head);
+}
+
+void __sort(Node **head) {
+   if ((*head) == NULL || (*head)->next == NULL) {
+      return;
+   }
+   Node *current = *head;
+   Node *next = (*head)->next;
+
+   while (next) {
+      next = next->next;
+      if (next) {
+         next = next->next;
+      } else
+         break;
+      current = current->next;
+   }
+   next = current->next;
+   current->next = NULL;
+   Node *a = *head;
+
+   __sort(&a);
+   __sort(&next);
+
+   *head = __merge(a, next);
+}
+
+Node* __merge(Node *first, Node *second) {
+   Node *n = malloc(sizeof(Node));
+   Node *start = n;
+   while (true) {
+      if (first == NULL) {
+         n->next = second;
+         break;
+      }
+      if (second == NULL) {
+         n->next = first;
+         break;
+      }
+
+      if (first->data < second->data) {
+         n->next = first;
+         first = first->next;
+      } else {
+         n->next = second;
+         second = second->next;
+      }
+      n = n->next;
+   }
+   return start->next;
+}
+
 /*
  * TESTS
  */
 
 void runAllTests() {
-   should_push_to_the_front();
-   should_pop_front();
-   should_push_back();
-   should_pop_back();
-   should_insert_at_index_value();
-   should_erase_at_index();
-   should_return_value_n_from_end();
-   should_reverse();
-   should_remove_value();
+//   should_push_to_the_front();
+//   should_pop_front();
+//   should_push_back();
+//   should_pop_back();
+//   should_insert_at_index_value();
+//   should_erase_at_index();
+//   should_return_value_n_from_end();
+//   should_reverse();
+//   should_remove_value();
+   should_sort_list();
 }
 
 void should_push_to_the_front() {
@@ -387,4 +442,28 @@ void should_remove_value() {
    //then
    assert(valueAt(list, 1) == 3);
    destroy(list);
+}
+
+void should_sort_list() {
+    //given
+    List *list = new();
+
+    //and
+    pushBack(list, 3);
+    pushBack(list, 4);
+    pushBack(list, 2);
+    pushBack(list, 1);
+
+    //when
+    sort(&(list->head));
+
+    //then
+    Node *it = list->head;
+    for (int i = 0; i < 4; ++i) {
+        printf("%d\n", it->data);
+        it = it->next;
+    }
+
+    free(it);
+    destroy(list);
 }

@@ -86,6 +86,12 @@ void reverse(List *list);
  */
 void removeValue(List *list, int value);
 
+/*
+ * merge sort for linked list
+ */
+void sort(Node **head);
+void __sort(Node **head);
+Node* __merge(Node *first, Node *second);
 
 /*
  * TESTS
@@ -100,5 +106,6 @@ void should_erase_at_index();
 void should_return_value_n_from_end();
 void should_reverse();
 void should_remove_value();
+void should_sort_list();
 
 #endif //C_PRACTICE_NODE_H
